@@ -11,3 +11,10 @@ type User struct {
 	CreatedAt         time.Time
 	IsEmailVerified   bool
 }
+
+type CreateUserParams struct {
+	Username       string
+	HashedPassword string
+	FullName       string
+	Email          string
+}

@@ -12,7 +12,7 @@ type Account struct {
 
 type CreateAccountParams struct {
 	Owner    string
-	Balance  string
+	Balance  int64
 	Currency string
 }
 
