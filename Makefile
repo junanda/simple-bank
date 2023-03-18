@@ -15,4 +15,7 @@ migrateup:
 migratedown:
 	migrate -path db/migration -database "postgresql://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@$(HOST_PSQL)/$(PSQL_DB)?sslmode=disable" -verbose down
 
-.PHONY: postgres createdb dropdb migrateup migratedown
+test:
+	go test -v -cover ./...
+
+.PHONY: postgres createdb dropdb migrateup migratedown test
