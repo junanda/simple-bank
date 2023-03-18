@@ -13,7 +13,6 @@ import (
 
 const (
 	dbDriver = "postgres"
-	dbSource = "postgresql://root:triadpass@localhost:5432/simple_bank?sslmode=disable"
 )
 
 var testAccounts ifc.AccountRepository
