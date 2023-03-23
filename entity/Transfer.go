@@ -9,3 +9,17 @@ type Transfer struct {
 	Amount        int64
 	CreatedAt     time.Time
 }
+
+type TransferTx struct {
+	FromAccountID int64
+	ToAccountID   int64
+	Amount        int64
+}
+
+type TransferTxResult struct {
+	Transfer    Transfer
+	FromAccount Account
+	ToAccount   Account
+	FromEntry   Entry
+	ToEntry     Entry
+}

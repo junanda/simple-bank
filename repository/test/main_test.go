@@ -17,15 +17,16 @@ const (
 )
 
 var testAccounts ifc.AccountRepository
+var testDB *sql.DB
 
 func TestMain(m *testing.M) {
-
-	conn, err := sql.Open(dbDriver, dbSource)
+	var err error
+	testDB, err = sql.Open(dbDriver, dbSource)
 	if err != nil {
 		log.Fatal("cannot connect to database:", err)
 	}
 
-	testAccounts = NewAccountRepository(conn)
+	testAccounts = NewAccountRepository(testDB)
 
 	os.Exit(m.Run())
 }
