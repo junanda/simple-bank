@@ -23,3 +23,10 @@ type TransferTxResult struct {
 	FromEntry   Entry
 	ToEntry     Entry
 }
+
+type ListTransferTx struct {
+	FromAccountID int64
+	ToAccountID   int64
+	Limit         int32
+	Offset        int32
+}
