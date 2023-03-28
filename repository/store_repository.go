@@ -7,10 +7,9 @@ import (
 
 	"github.com/junanda/simple-bank/entity"
 	ifc "github.com/junanda/simple-bank/repository/interface_repo"
-	interfaceRepo "github.com/junanda/simple-bank/repository/interface_repo"
 )
 
-func NewStoreRepository(dbS *sql.DB, tr interfaceRepo.TransferRepository, ent interfaceRepo.EntryRepository) ifc.StoreRepository {
+func NewStoreRepository(dbS *sql.DB, tr ifc.TransferRepository, ent ifc.EntryRepository) ifc.StoreRepository {
 	return &StoreRepositoryImpl{
 		dbase:  dbS,
 		transR: tr,
@@ -20,8 +19,8 @@ func NewStoreRepository(dbS *sql.DB, tr interfaceRepo.TransferRepository, ent in
 
 type StoreRepositoryImpl struct {
 	dbase  *sql.DB
-	transR interfaceRepo.TransferRepository
-	entryR interfaceRepo.EntryRepository
+	transR ifc.TransferRepository
+	entryR ifc.EntryRepository
 }
 
 func (store *StoreRepositoryImpl) execTx(ctx context.Context, fn func() error) error {
