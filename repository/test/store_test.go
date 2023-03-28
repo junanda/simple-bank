@@ -10,7 +10,7 @@ import (
 )
 
 func TestTransferTX(t *testing.T) {
-	store := NewStoreRepository(testDB)
+	store := NewStoreRepository(testDB, testTranfer, testEntry)
 
 	account1 := createRandomAccount(t)
 	account2 := createRandomAccount(t)
@@ -52,8 +52,8 @@ func TestTransferTX(t *testing.T) {
 		require.NotZero(t, transfer.ID)
 		require.NotZero(t, transfer.CreatedAt)
 
-		_, err = store.GetTransfer(context.Background(), transfer.ID)
-		requrie.NoError(t, err)
+		_, err = testTranfer.GetTransfer(context.Background(), transfer.ID)
+		require.NoError(t, err)
 
 		// Check Entries
 		fromEntry := result.FromEntry
@@ -63,7 +63,7 @@ func TestTransferTX(t *testing.T) {
 		require.NotZero(t, fromEntry.ID)
 		require.NotZero(t, fromEntry.CreatedAt)
 
-		_, err = store.GetEntry(context.Background(), fromEntry.ID)
+		_, err = testEntry.GetEntry(context.Background(), fromEntry.ID)
 		require.NoError(t, err)
 
 		toEntry := result.ToEntry
@@ -73,7 +73,7 @@ func TestTransferTX(t *testing.T) {
 		require.NotZero(t, toEntry.ID)
 		require.NotZero(t, toEntry.CreatedAt)
 
-		_, err = store.GetEntry(context.Background(), toEntry.ID)
+		_, err = testEntry.GetEntry(context.Background(), toEntry.ID)
 		require.NoError(t, err)
 
 		// TODO: Checks account balance

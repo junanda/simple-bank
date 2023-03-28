@@ -16,8 +16,12 @@ const (
 	dbSource = "postgresql://root:triadpass@localhost:5432/simple_bank?sslmode=disable"
 )
 
-var testAccounts ifc.AccountRepository
-var testDB *sql.DB
+var (
+	testAccounts ifc.AccountRepository
+	testEntry    ifc.EntryRepository
+	testTranfer  ifc.TransferRepository
+	testDB       *sql.DB
+)
 
 func TestMain(m *testing.M) {
 	var err error
@@ -27,6 +31,8 @@ func TestMain(m *testing.M) {
 	}
 
 	testAccounts = NewAccountRepository(testDB)
+	testEntry = NewEntriesRepository(testDB)
+	testTranfer = NewTransferImpl(testDB)
 
 	os.Exit(m.Run())
 }
