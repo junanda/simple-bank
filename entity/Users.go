@@ -1,6 +1,9 @@
 package entity
 
-import "time"
+import (
+	"database/sql"
+	"time"
+)
 
 type User struct {
 	Username          string
@@ -17,4 +20,13 @@ type CreateUserParams struct {
 	HashedPassword string
 	FullName       string
 	Email          string
+}
+
+type UpdateUser struct {
+	HashedPassword    sql.NullString
+	PasswordChangedAt sql.NullTime
+	FullName          sql.NullString
+	Email             sql.NullString
+	IsEmailVerified   sql.NullBool
+	Username          string
 }
