@@ -11,3 +11,14 @@ type VerifyEmail struct {
 	CreatedAt  time.Time
 	ExpiredAt  time.Time
 }
+
+type CreateVerifyEmail struct {
+	Username   string
+	Email      string
+	SecretCode string
+}
+
+type UpdateVerifyEmail struct {
+	ID         int64
+	SecretCode string
+}
