@@ -50,6 +50,7 @@ func (a *AccountRepositoryImpl) CreateAccount(ctx context.Context, arg entity.Cr
 	)
 	return i, err
 }
+
 func (a *AccountRepositoryImpl) GetAccount(ctx context.Context, id int64) (entity.Account, error) {
 	var (
 		data  entity.Account
@@ -58,6 +59,27 @@ func (a *AccountRepositoryImpl) GetAccount(ctx context.Context, id int64) (entit
 	)
 
 	query = `SELECT id, owner, balance, currency, created_at FROM accounts WHERE id = $1 LIMIT 1`
+	row := a.db.QueryRowContext(ctx, query, id)
+
+	err = row.Scan(
+		&data.ID,
+		&data.Owner,
+		&data.Balance,
+		&data.Currency,
+		&data.CreatedAt,
+	)
+
+	return data, err
+}
+
+func (a *AccountRepositoryImpl) GetAccountForUpdate(ctx context.Context, id int64) (entity.Account, error) {
+	var (
+		data  entity.Account
+		err   error
+		query string
+	)
+
+	query = `SELECT id, owner, balance, currency, created_at FROM accounts WHERE id = $1 LIMIT 1 FOR UPDATE`
 	row := a.db.QueryRowContext(ctx, query, id)
 
 	err = row.Scan(

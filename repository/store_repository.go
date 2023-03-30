@@ -9,11 +9,12 @@ import (
 	ifc "github.com/junanda/simple-bank/repository/interface_repo"
 )
 
-func NewStoreRepository(dbS *sql.DB, tr ifc.TransferRepository, ent ifc.EntryRepository) ifc.StoreRepository {
+func NewStoreRepository(dbS *sql.DB, tr ifc.TransferRepository, ent ifc.EntryRepository, accn ifc.AccountRepository) ifc.StoreRepository {
 	return &StoreRepositoryImpl{
 		dbase:  dbS,
 		transR: tr,
 		entryR: ent,
+		accntR: accn,
 	}
 }
 
@@ -21,6 +22,7 @@ type StoreRepositoryImpl struct {
 	dbase  *sql.DB
 	transR ifc.TransferRepository
 	entryR ifc.EntryRepository
+	accntR ifc.AccountRepository
 }
 
 func (store *StoreRepositoryImpl) execTx(ctx context.Context, fn func() error) error {
@@ -72,6 +74,34 @@ func (store *StoreRepositoryImpl) TransferTx(ctx context.Context, arg entity.Tra
 		})
 
 		// TODO: update accounts balance
+
+		if err != nil {
+			return err
+		}
+
+		account1, err := store.accntR.GetAccountForUpdate(ctx, arg.FromAccountID)
+		if err != nil {
+			return err
+		}
+
+		result.FromAccount, err = store.accntR.UpdateAccount(ctx, entity.UpdateAccountParams{
+			ID:      arg.FromAccountID,
+			Balance: account1.Balance - arg.Amount,
+		})
+
+		if err != nil {
+			return err
+		}
+
+		account2, err := store.accntR.GetAccountForUpdate(ctx, arg.ToAccountID)
+		if err != nil {
+			return err
+		}
+
+		result.ToAccount, err = store.accntR.UpdateAccount(ctx, entity.UpdateAccountParams{
+			ID:      arg.ToAccountID,
+			Balance: account2.Balance + arg.Amount,
+		})
 
 		if err != nil {
 			return err
