@@ -99,7 +99,7 @@ func TestTransferTX(t *testing.T) {
 		existed[k] = true
 	}
 
-	// check the final update balances
+	// check the final update balance
 	updateAccount1, err := testAccounts.GetAccount(context.Background(), account1.ID)
 	require.NoError(t, err)
 
